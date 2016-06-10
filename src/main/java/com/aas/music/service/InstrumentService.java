@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
-import com.aas.music.model.EqInstrument;
 import com.aas.music.model.Instrument;
 
 
@@ -31,7 +30,7 @@ public interface InstrumentService {
 	 * @param instruments the presets' details.
 	 * @throws DataAccessException when it has been an access problem.
 	 */
-	void add(List<EqInstrument> instruments) throws DataAccessException;
+	void add(List<Instrument> instruments) throws DataAccessException;
 
 	/**
 	 * Deletes the instrument's details specified.
@@ -51,6 +50,16 @@ public interface InstrumentService {
 	 * @throws DataAccessException when it has been an access problem.
 	 */
 	Instrument findInstrument(int instrumentId, String type) throws DataAccessException;
+
+	/**
+	 * Looks for the instrument with the specified ID.
+	 * 
+	 * @param name the instrument's name.
+	 * @param type the instrument type.
+	 * @return the the instrument with the specified ID.
+	 * @throws DataAccessException when it has been an access problem.
+	 */
+	Instrument findInstrument(String name, String type) throws DataAccessException;
 
 	/**
 	 * @return all the instrument details.

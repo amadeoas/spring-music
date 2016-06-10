@@ -43,9 +43,10 @@ public class JpaInstrumentRepositoryImpl implements InstrumentRepository {
 	}
 
 	@Override
-	public void add(final List<EqInstrument> instruments) throws DataAccessException {
-		for (final EqInstrument instrument : instruments) {
-			add(instrument);
+	@Transactional
+	public void add(final List<Instrument> instruments) throws DataAccessException {
+		for (final Instrument instrument : instruments) {
+			this.em.persist(instrument);
 		}
 	}
 
@@ -109,7 +110,7 @@ public class JpaInstrumentRepositoryImpl implements InstrumentRepository {
 		try {
 	    	final Query query;
 	    	
-	    	if (EqInstrument.TYPE.equals(name)) {
+	    	if (EqInstrument.TYPE.equals(type)) {
 		    	query = this.em.createQuery(
 		    			"SELECT i " 
 		    		  + "FROM EqInstrument i "
@@ -142,7 +143,7 @@ public class JpaInstrumentRepositoryImpl implements InstrumentRepository {
 	private void updateIt(final EqInstrument instrument) throws DataAccessException {
     	Query query = this.em.createQuery(
     			"UPDATE EqInstrument "
-    		  + "SET id = :p, name = :n "
+    		  + "SET name = :n "
     		  + "WHERE id = :p" );
 
     	query.setParameter("n", instrument.getName())
@@ -152,7 +153,7 @@ public class JpaInstrumentRepositoryImpl implements InstrumentRepository {
     	for (final EqSetting eqSetting : instrument.getEqSettings()) {
     		query = this.em.createQuery(
         			"UPDATE EqSetting "
-        		  + "SET id = :p, instrument_id :=ii , active = :a, band_type :=bt, band_set :=bs, gain :=g, freq :=f, freq_units :=fu "
+        		  + "SET instrument_id = :ii, active = :a, band_type = :bt, band_set = :bs, gain = :g, freq = :f, freq_units = :fu "
         		  + "WHERE id = :p" );
         	query.setParameter("fu", eqSetting.getFreqUnits().name())
         		.setParameter("f", eqSetting.getFrequency())
@@ -167,11 +168,11 @@ public class JpaInstrumentRepositoryImpl implements InstrumentRepository {
 	}
 
 	public void updateIt(final VocalCompressor instrument) throws DataAccessException {
-    	Query query = this.em.createQuery(
+	    final Query query = this.em.createQuery(
     			"UPDATE VocalCompressor "
-    		  + "SET id = :p, name = :n, attack = :a, "
+    		  + "SET name = :n, attack = :a, "
     		  + "release = :re, threshold = :t, ratio = :r, ratio_of = :ro, "
-    		  + "presence = :pr, make_up = :mu"
+    		  + "presence = :pr, make_up = :mu "
     		  + "WHERE id = :p" );
 
     	query.setParameter("mu", instrument.getMakeUp())

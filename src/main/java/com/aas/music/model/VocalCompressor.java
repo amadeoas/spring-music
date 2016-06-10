@@ -72,11 +72,11 @@ public class VocalCompressor extends BaseEntity implements Instrument {
 		return this.threshold;
 	}
 
-	public long getRatio() {
+	public int getRatio() {
 		return this.ratio;
 	}
 
-	public long getRatioOf() {
+	public int getRatioOf() {
 		return this.ratioOf;
 	}
 

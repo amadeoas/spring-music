@@ -34,7 +34,7 @@ public interface InstrumentRepository {
 	 * @param presets the presets' details.
 	 * @throws DataAccessException when the data access failed.
 	 */
-	void add(List<EqInstrument> presets) throws DataAccessException;
+	void add(List<Instrument> presets) throws DataAccessException;
 
 	/**
 	 * Deletes the specified instrument's details.

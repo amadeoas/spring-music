@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
-import com.aas.music.model.EqInstrument;
 import com.aas.music.model.Instrument;
 import com.aas.music.repository.InstrumentRepository;
 
@@ -37,7 +36,7 @@ public class InstrumentServiceImpl implements InstrumentService {
 	}
 
 	@Override
-	public void add(final List<EqInstrument> instruments) throws DataAccessException {
+	public void add(final List<Instrument> instruments) throws DataAccessException {
 		this.instrumentRepository.add(instruments);
 	}
 
@@ -50,6 +49,12 @@ public class InstrumentServiceImpl implements InstrumentService {
 	public Instrument findInstrument(final int instrumentId, final String type) 
 			throws DataAccessException {
 		return this.instrumentRepository.findById(instrumentId, type);
+	}
+
+	@Override
+	public Instrument findInstrument(final String name, final String type) 
+			throws DataAccessException {
+		return this.instrumentRepository.findByName(name, type);
 	}
 
     @Override
