@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.aas.music.web.InstrumentsController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
@@ -47,6 +48,47 @@ public class InstrumentControllerTests {
             .andExpect(status().isOk())
             .andExpect(view().name("instruments/instrumentsList"))
             .andExpect(forwardedUrl("instruments/instrumentsList"));
+    }
+
+//    @Test
+//    public void testAddVocalCompressor() throws Exception {
+//    	final VocalCompressor instrument = new VocalCompressor();
+//    	int result;
+//
+//    	instrument.setName("Test");
+//    	result = (Integer) this.mockMvc.perform(post("/add")
+//        		.content(asJsonString(instrument))
+//    			.contentType(MediaType.APPLICATION_JSON)
+//    			.accept(MediaType.APPLICATION_JSON))
+//            .andExpect(status().isOk())
+//            .andReturn().getAsyncResult();
+//    	assertTrue(result > 0);
+//    }
+//
+//    @Test
+//    public void testAddEqInstrument() throws Exception {
+//    	final EqInstrument instrument = new EqInstrument();
+//    	int result;
+//
+//    	instrument.setName("Test");
+//    	result = (Integer) this.mockMvc.perform(post("/add")
+//        		.content(asJsonString(instrument))
+//    			.contentType(MediaType.APPLICATION_JSON)
+//    			.accept(MediaType.APPLICATION_JSON))
+//            .andExpect(status().isOk())
+//            .andReturn().getAsyncResult();
+//    	assertTrue(result > 0);
+//    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(obj);
+
+            return jsonContent;
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -147,6 +147,7 @@ public class InstrumentsController extends BaseController {
     public @ResponseBody int add(final EqInstrument instrument) {
     	return this.instrumentService.add(instrument);
     }
+
     @RequestMapping(value="/addVC", method = RequestMethod.POST)
     public @ResponseBody int add(final VocalCompressor instrument) {
     	return this.instrumentService.add(instrument);

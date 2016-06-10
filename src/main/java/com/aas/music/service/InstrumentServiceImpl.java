@@ -68,4 +68,9 @@ public class InstrumentServiceImpl implements InstrumentService {
 		this.instrumentRepository.update(instrument);
 	}
 
+	@Override
+	public Instrument findDefault(final String type) {
+		return this.instrumentRepository.findDefault(type);
+	}
+
 }

@@ -1,8 +1,7 @@
 package com.aas.music.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +21,7 @@ import com.aas.music.model.EqInstrument;
 import com.aas.music.model.EqSetting;
 import com.aas.music.model.Instrument;
 import com.aas.music.model.VocalCompressor;
+
 
 /**
  * <p>Base class for {@link InstrumentService} integration tests. </p> <p> Subclasses should specify Spring context
@@ -63,6 +63,7 @@ public class InstrumentServiceJpaTests {
 	public void testEqInstrumentAdd() {
 		final EqInstrument instrument = new EqInstrument();
 
+		assertTrue(instrument.isNew());
 		instrument.setName("Test");
 //		instrument.setEqSettings(eqSettings);
 		this.instrumentService.add(instrument);
@@ -95,6 +96,7 @@ public class InstrumentServiceJpaTests {
 		// 
 		final VocalCompressor instrument = new VocalCompressor();
 
+		assertTrue(instrument.isNew());
 		instrument.setName("Test");
 		this.instrumentService.add(instrument);
 	}
@@ -141,18 +143,45 @@ public class InstrumentServiceJpaTests {
     public void testVocalCompressorUpdate() {
     	final String NAME = "Vocal Compressor";
     	final String NEW_NAME = "Vocal Compressor - new";
-    	VocalCompressor instrument = (VocalCompressor) this.instrumentService.findInstrument(
-    			NAME, VocalCompressor.TYPE);
+    	final VocalCompressor instrument 
+    			= (VocalCompressor) this.instrumentService.findInstrument(
+    					NAME, VocalCompressor.TYPE);
+    	final VocalCompressor newInstrument;
 
+		assertFalse(instrument.isNew());
     	instrument.setName(NEW_NAME);
+    	instrument.setMode(instrument.getMode() + " 1");
+    	instrument.setAttack(instrument.getAttack() + 1);
+    	instrument.setRelease(instrument.getRelease() + 1);
+    	instrument.setThreshold(instrument.getThreshold() + 1);
+    	instrument.setRatio(instrument.getRatio() + 1);
+    	instrument.setRatioOf(instrument.getRatioOf() + 1);
+    	instrument.setPresence(instrument.getPresence() + 1);
+    	instrument.setMakeUp(instrument.getMakeUp() + 1);
     	this.instrumentService.update(instrument);
     	
-    	instrument = (VocalCompressor) this.instrumentService.findInstrument(
+    	newInstrument = (VocalCompressor) this.instrumentService.findInstrument(
     			instrument.getId(), VocalCompressor.TYPE);
     	assertEquals(NEW_NAME, instrument.getName());
+    	assertEquals(instrument.getMode(), instrument.getMode());
+    	assertEquals(instrument.getAttack(), newInstrument.getAttack());
+    	assertEquals(instrument.getRelease(), newInstrument.getRelease());
+    	assertEquals(instrument.getThreshold(), newInstrument.getThreshold(), 0.01);
+    	assertEquals(instrument.getRatio(), newInstrument.getRatio());
+    	assertEquals(instrument.getRatioOf(), newInstrument.getRatioOf());
+    	assertEquals(instrument.getPresence(), newInstrument.getPresence(), 0.01);
+    	assertEquals(instrument.getMakeUp(), newInstrument.getMakeUp(), 0.01);
     	
     	// Restore data
     	instrument.setName(NAME);
+    	instrument.setMode(instrument.getMode().substring(0, instrument.getMode().length() - 2));
+    	instrument.setAttack(instrument.getAttack() - 1);
+    	instrument.setRelease(instrument.getRelease() - 1);
+    	instrument.setThreshold(instrument.getThreshold() - 1);
+    	instrument.setRatio(instrument.getRatio() - 1);
+    	instrument.setRatioOf(instrument.getRatioOf() - 1);
+    	instrument.setPresence(instrument.getPresence() - 1);
+    	instrument.setMakeUp(instrument.getMakeUp() - 1);
     	this.instrumentService.update(instrument);
     }
     
@@ -167,7 +196,9 @@ public class InstrumentServiceJpaTests {
     	EqSetting eqSetting;
     	int gain;
 
+		assertFalse(instrument.isNew());
     	instrument.setName(NEW_NAME);
+    	instrument.setEqSettings(instrument.getEqSettings());
     	iter = instrument.getEqSettings().iterator();
     	eqSetting = iter.next();
     	gain = eqSetting.getGain() + INCREASE;
@@ -195,6 +226,19 @@ public class InstrumentServiceJpaTests {
     @Test
     public void testEqInstrumentDelete() {
     	this.instrumentService.delete(1, EqInstrument.TYPE);
+    }
+    
+    @Test
+    public void testDefault() {
+    	Instrument instrument;
+
+    	instrument = this.instrumentService.findDefault(EqInstrument.TYPE);
+    	assertNotNull(instrument);
+    	assertEquals(instrument.getType(), EqInstrument.TYPE);
+
+    	instrument = this.instrumentService.findDefault(VocalCompressor.TYPE);
+    	assertNotNull(instrument);
+    	assertEquals(instrument.getType(), VocalCompressor.TYPE);
     }
 
 }

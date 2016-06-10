@@ -124,7 +124,7 @@ public class VocalCompressor extends BaseEntity implements Instrument {
 		this.presence = presence;
 	}
 
-	public void getMakeUp(final double makeUp) {
+	public void setMakeUp(final double makeUp) {
 		this.makeUp = makeUp;
 	}
 

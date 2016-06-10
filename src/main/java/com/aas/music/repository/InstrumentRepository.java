@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
-import com.aas.music.model.EqInstrument;
 import com.aas.music.model.Instrument;
 
 
@@ -66,15 +65,17 @@ public interface InstrumentRepository {
     /**
      * Retrieves the default <code>Instrument</code> from the data store by name.
      *
+     * @param type the data type.
      * @return the <code>Instrument</code> if found.
 	 * @throws DataAccessException when the data access failed.
      */
-    EqInstrument findDefault() throws DataAccessException;
+    Instrument findDefault(String type) throws DataAccessException;
 
     /**
      * Retrieves an <code>Instrument</code> from the data store by name.
      *
      * @param name the name to search for.
+     * @param type the data type.
      * @return the <code>Instrument</code> if found.
 	 * @throws DataAccessException when the data access failed.
      */
@@ -87,4 +88,5 @@ public interface InstrumentRepository {
 	 * @throws DataAccessException when the data access failed.
 	 */
 	void update(Instrument instrument) throws DataAccessException;
+
 }

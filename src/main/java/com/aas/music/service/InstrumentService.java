@@ -40,6 +40,8 @@ public interface InstrumentService {
 	 * @throws DataAccessException when it has been an access problem.
 	 */
 	void delete(int instrumentId, String type) throws DataAccessException;
+	
+	Instrument findDefault(String type);
 
 	/**
 	 * Looks for the instrument with the specified ID.

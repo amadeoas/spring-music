@@ -96,8 +96,12 @@ public class JpaInstrumentRepositoryImpl implements InstrumentRepository {
 	}
 
 	@Override
-	public EqInstrument findDefault() throws DataAccessException {
-		return (EqInstrument) findByName("Default", EqInstrument.TYPE);
+	public Instrument findDefault(final String type) throws DataAccessException {
+		if (EqInstrument.TYPE.equals(type)) {
+			return (EqInstrument) findByName("Default", EqInstrument.TYPE);
+		}
+		
+		return new VocalCompressor();
 	}
 
     /**

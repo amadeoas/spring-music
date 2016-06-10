@@ -193,11 +193,13 @@ public class EqSetting extends BaseEntity {
 	 */
 	public void setBandType(final BandType bandType) 
 			throws InvalidParameterException {
-		if (bandType == null 
-				|| (this.bandSet != null && !this.bandSet.isAssociatedTo(bandType))) {
-			throw new InvalidParameterException("Invalid band set '" 
-					+ this.bandSet.name() + "' for the type '" 
-					+ (bandType == null ? "" : bandType.name()) + "'");
+		if (bandType == null ) {
+			throw new InvalidParameterException("Invalid band set; it is NULL");
+		} else if (this.bandSet != null && !this.bandSet.isAssociatedTo(bandType)) {
+			throw new InvalidParameterException(
+					  "Invalid band set '" + this.bandSet.name() 
+					+ "' for the type '" + bandType.name() 
+					+ "'");
 		}
 		this.bandType = bandType;
 	}
@@ -211,11 +213,13 @@ public class EqSetting extends BaseEntity {
 	 * 			the current band type.
 	 */
 	public void setBandSet(final BandSet bandSet) throws InvalidParameterException {
-		if (bandSet == null 
-				|| (this.bandType != null && !bandSet.isAssociatedTo(this.bandType))) {
-			throw new InvalidParameterException("Invalid band set '" 
-					+ (bandSet == null ? "NULL" : bandSet.name()) 
-					+ "' for the type '" + this.bandType.name() + "'");
+		if (bandSet == null) {
+			throw new InvalidParameterException("Invalid band set; it is NULL");
+		} else if (this.bandType != null && !bandSet.isAssociatedTo(this.bandType)) {
+			throw new InvalidParameterException(
+					  "Invalid band set '" + bandSet.name() 
+					+ "' for the type '" + this.bandType.name()
+					+ "'");
 		}
 		this.bandSet = bandSet;
 	}
@@ -240,7 +244,7 @@ public class EqSetting extends BaseEntity {
 			throw new InvalidParameterException("Missing frequency units");
 		}
 		if (this.freqUnits != null) {
-			this.frequency = (freqUnits.factor() * this.frequency) / this.freqUnits.factor();
+			this.frequency = (this.freqUnits.factor() * this.frequency) / freqUnits.factor();
 		}
 		this.freqUnits = freqUnits;
 	}
