@@ -3,6 +3,8 @@ package com.aas.music.web;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -15,8 +17,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.aas.music.model.BaseEntity;
 import com.aas.music.model.EqInstrument;
 import com.aas.music.model.Instrument;
 import com.aas.music.model.VocalCompressor;
@@ -136,6 +140,43 @@ public class InstrumentControllerTests {
             .andExpect(view().name("instruments/vcEdit"))
             .andExpect(forwardedUrl("instruments/vcEdit"));
     }
+
+    @Test
+    public void testDataEqInstrument() throws Exception {
+    	final int instrumentId = 2;
+    	final EqInstrument instrument = new EqInstrument();
+
+    	instrument.setId(instrumentId);
+    	instrument.setName("Test");
+    	instrument.setEqSettings(new ArrayList<>());
+    	testData(instrumentId, instrument);
+    }
+
+    @Test
+    public void testDataVocalCompressor() throws Exception {
+    	final int instrumentId = 1;
+    	final VocalCompressor instrument = new VocalCompressor();
+
+    	instrument.setId(instrumentId);
+    	instrument.setName("Test");
+    	testData(instrumentId, instrument);
+    }
+
+//    @Test
+//    public void testAddVocalCompressor() throws Exception {
+//    	final VocalCompressor instrument = new VocalCompressor();
+//
+//    	instrument.setName("Test");
+//    	testAdd(instrument);
+//    }
+//
+//    @Test
+//    public void testAddEqInstrument() throws Exception {
+//    	final EqInstrument instrument = new EqInstrument();
+//
+//    	instrument.setName("Test");
+//    	testAdd(instrument);
+//    }
     
     @Test
     public void testDelete() throws Exception {
@@ -181,6 +222,17 @@ public class InstrumentControllerTests {
     	return gson.toJson(obj);
     }
     
+    private void testData(final int instrumentId, final Instrument instrument) 
+    		throws Exception {
+    	when(this.instrumentService.findInstrument(instrumentId, instrument.getType()))
+    			.thenReturn(instrument);
+    	this.mockMvc.perform(
+    			get("/instruments/data/{instrumentId}_{type}", instrumentId, instrument.getType()))
+    			.andExpect(status().isOk())
+    			.andExpect(jsonPath("$.id", is(instrumentId)))
+    			.andExpect(jsonPath("$.type", is(instrument.getType())));
+    }
+    
     private void testDelete_(final int instrumentId, final String type) 
     		throws Exception {
     	final Collection<Instrument> instruments = new ArrayList<>();
@@ -193,5 +245,21 @@ public class InstrumentControllerTests {
             .andExpect(view().name("instruments/instrumentsList"))
             .andExpect(forwardedUrl("instruments/instrumentsList"));
     }
+
+//    private void testAdd(final Instrument instrument) throws Exception {
+//    	final MvcResult result;
+//    	String content;
+//
+//    	when(this.instrumentService.add(instrument))
+//    		.thenReturn(Integer.valueOf(1));
+//    	result = this.mockMvc.perform(post(instrument instanceof EqInstrument 
+//    				? "/instruments/add" : "/instruments/addVC")
+//        		.content(asJsonString(instrument))
+//    			.contentType(MediaType.APPLICATION_JSON))
+//            .andExpect(status().isOk())
+//            .andReturn();
+//    	content = result.getResponse().getContentAsString();
+//    	assertTrue(Integer.parseInt(content) > 0);
+//    }
 
 }
