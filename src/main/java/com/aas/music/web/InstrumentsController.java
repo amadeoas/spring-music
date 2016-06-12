@@ -56,22 +56,22 @@ public class InstrumentsController extends BaseController {
 	/**
      * <p>Retrieves a list of all the products the specified customer is subscribed to.</p>
      * 
-     * <p>Expected HTTP GET and request '/instruments/{customerId}'.</p>
+     * <p>Expected HTTP GET and request '/instruments/{customerId}_{type}'.</p>
      * 
      * @param instrumentId the instrument's ID.
      * @param type the instrument's type.
      * @return the instrument specified.
      */
     @RequestMapping(value="/data/{instrumentId}_{type}", method=RequestMethod.GET)
-    public @ResponseBody Instrument get(@PathVariable int instrumentId, 
-    		@PathVariable final String type) {
+    public @ResponseBody Instrument get(@PathVariable("instrumentId") int instrumentId, 
+    		@PathVariable("type") final String type) {
     	return this.instrumentService.findInstrument(instrumentId, type);
     }
 
 	/**
      * <p>Retrieves the view of the instrument's details.</p>
      * 
-     * <p>Expected HTTP GET and request '/instruments/view/{instrumentId}'.</p>
+     * <p>Expected HTTP GET and request '/instruments/view/{instrumentId}_{type}'.</p>
      * 
      * @param lang the language.
      * @param instrumentId the instrument's ID.
@@ -81,7 +81,8 @@ public class InstrumentsController extends BaseController {
      */
     @RequestMapping(value="/view/{instrumentId}_{type}", method = RequestMethod.GET)
     public String view(@RequestParam(value="lang", required=false) String language, 
-    		@PathVariable final int instrumentId, @PathVariable final String type, 
+    		@PathVariable("instrumentId") final int instrumentId, 
+    		@PathVariable("type") final String type, 
     		final Model model) {
     	final Instrument instrument = this.instrumentService.findInstrument(instrumentId, type);
 
@@ -94,7 +95,7 @@ public class InstrumentsController extends BaseController {
 	/**
      * <p>Retrieves the add view of the instrument's details.</p>
      * 
-     * <p>Expected HTTP GET and request '/instruments/view/{instrumentId}'.</p>
+     * <p>Expected HTTP GET and request '/instruments/view/{instrumentId}_{type}'.</p>
      * 
      * @param lang the language.
      * @param instrumentId the instrument's ID.
@@ -104,7 +105,8 @@ public class InstrumentsController extends BaseController {
      */
     @RequestMapping(value="/addView/{instrumentId}_{type}", method = RequestMethod.GET)
     public String addView(@RequestParam(value="lang", required=false) String language, 
-    		@PathVariable final int instrumentId, @PathVariable final String type, 
+    		@PathVariable("instrumentId") final int instrumentId, 
+    		@PathVariable("type") final String type, 
     		final Model model) {
     	setLanguage(language, model);
 
@@ -114,7 +116,7 @@ public class InstrumentsController extends BaseController {
 	/**
      * <p>Retrieves the edit view of the instrument's details.</p>
      * 
-     * <p>Expected HTTP GET and request '/instruments/edit/{instrumentId}'.</p>
+     * <p>Expected HTTP GET and request '/instruments/edit/{instrumentId}_{type}'.</p>
      * 
      * @param lang the language.
      * @param instrumentId the instrument's ID.
@@ -124,7 +126,8 @@ public class InstrumentsController extends BaseController {
      */
     @RequestMapping(value="/edit/{instrumentId}_{type}", method = RequestMethod.GET)
     public String edit(@RequestParam(value="lang", required=false) String language, 
-    		@PathVariable final int instrumentId, @PathVariable final String type, 
+    		@PathVariable("instrumentId") final int instrumentId, 
+    		@PathVariable("type") final String type, 
     		final Model model) {
     	setLanguage(language, model);
     	model.addAttribute("id", instrumentId);
@@ -136,7 +139,7 @@ public class InstrumentsController extends BaseController {
 	/**
      * <p>Saves the instrument's details provided.</p>
      * 
-     * <p>Expected HTTP GET and request '/instruments/edit/{instrumentId}'.</p>
+     * <p>Expected HTTP GET and request '/instruments/add'.</p>
      * 
      * @param lang the language.
      * @param instrument the instrument's details.
@@ -158,7 +161,7 @@ public class InstrumentsController extends BaseController {
      * 
      * <p>Expected HTTP POST and request '/instruments/update'.</p>
      * 
-     * @param instrument the instrument's details.
+     * @param instrument the EQ instrument's details.
      * @param model the model.
      * @return the success template.
      */
@@ -168,6 +171,16 @@ public class InstrumentsController extends BaseController {
 
         return "/success";
     }
+
+	/**
+     * <p>Updates the instrument with the provided details.</p>
+     * 
+     * <p>Expected HTTP POST and request '/instruments/update'.</p>
+     * 
+     * @param instrument the vocal compressor's details.
+     * @param model the model.
+     * @return the success template.
+     */
     @RequestMapping(value="/updateVC", method = RequestMethod.POST)
     public String update(final VocalCompressor instrument, final Model model) {
     	this.instrumentService.update(instrument);
@@ -178,7 +191,7 @@ public class InstrumentsController extends BaseController {
 	/**
      * <p>Deletes the specified instrument.</p>
      * 
-     * <p>Expected HTTP GET and request '/instruments/edit/{instrumentId}'.</p>
+     * <p>Expected HTTP GET and request '/instruments/edit/{instrumentId}_{type}'.</p>
      * 
      * @param lang the language.
      * @param instrumentId the instrument's ID.
@@ -188,7 +201,8 @@ public class InstrumentsController extends BaseController {
      */
     @RequestMapping(value="/delete/{instrumentId}_{type}", method = RequestMethod.GET)
     public String delete(@RequestParam(value="lang", required=false) String language, 
-    		@PathVariable final int instrumentId, @PathVariable final String type, 
+    		@PathVariable("instrumentId") final Integer instrumentId, 
+    		@PathVariable("type") final String type, 
     		final Model model) {
     	this.instrumentService.delete(instrumentId, type);
 

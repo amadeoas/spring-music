@@ -30,6 +30,9 @@ public class BaseController {
     	if (language == null || language.length() == 0) {
     		language = DEFAULT_LANGUAGE;
     	}
+    	if (model == null) {
+    		return;
+    	}
     	model.addAttribute("language", language);
     }
 

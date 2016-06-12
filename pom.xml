@@ -25,7 +25,7 @@
         <tomcat.version>8.0.35</tomcat.version>
 
         <!-- Test -->
-        <assertj.version>2.2.0</assertj.version>
+        <assertj.version>3.4.1</assertj.version>
 
         <!-- Dates -->
         <jodatime-hibernate.version>1.4</jodatime-hibernate.version>

@@ -1,6 +1,7 @@
 package com.aas.music.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -49,7 +50,11 @@ public class HomeControllerTests {
     public void testSuccess() throws Exception {
         this.mockMvc.perform(get("/"))
             .andExpect(status().isOk())
-            .andExpect(view().name("welcome"));
+            .andExpect(view().name("welcome"))
+            .andExpect(model().attributeExists("language"));
+        
+        // No change
+        this.homeController.setLanguage("", null);
     }
 
 }

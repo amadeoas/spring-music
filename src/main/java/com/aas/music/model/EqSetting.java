@@ -31,7 +31,8 @@ public class EqSetting extends BaseEntity {
 		HI_MID,
 		HI;
 	} // end enumeration BandType
-	
+
+
 	/**
 	 * The available set per specific type.
 	 * 
@@ -44,9 +45,19 @@ public class EqSetting extends BaseEntity {
 		LOW(BandType.LOW_MID),
 		NONE(BandType.HI_MID);
 
+		/**
+		 * List of band types associated to this band set.
+		 */
 		private BandType[] bandTypes;
 
 		
+		/**
+		 * Checks if the specified band type is associated to this band set.
+		 * 
+		 * @param bandType the band type.
+		 * @return true if the specified band type is associated to this band 
+		 * 			set, or false otherwise.
+		 */
 		public boolean isAssociatedTo(final BandType bandType) {
 			for (final BandType type : this.bandTypes) {
 				if (type == bandType) {
@@ -80,13 +91,21 @@ public class EqSetting extends BaseEntity {
 	} // end enumeration BandSet
 
 
+	/**
+	 * The valid units for the frequency.
+	 * 
+	 * @author aasco
+	 */
 	public enum FrequencyUnits {
-		Hz(1l),
+		Hz(1l), // base units
 		KHz(1000l),
 		MHz(1000000l),
 		GHz(1000000000l);
 		
 		
+		/**
+		 * The factor in relation to the base units, the Hz.
+		 */
 		private final long factor;
 
 
@@ -94,6 +113,9 @@ public class EqSetting extends BaseEntity {
 			this.factor = factor;
 		}
 
+		/**
+		 * @return the factor in relation to the base units, the Hz.
+		 */
 		public long factor() {
 			return this.factor;
 		}
@@ -194,8 +216,9 @@ public class EqSetting extends BaseEntity {
 	public void setBandType(final BandType bandType) 
 			throws InvalidParameterException {
 		if (bandType == null ) {
-			throw new InvalidParameterException("Invalid band set; it is NULL");
-		} else if (this.bandSet != null && !this.bandSet.isAssociatedTo(bandType)) {
+			throw new InvalidParameterException("Invalid band type; it is NULL");
+		}
+		if (this.bandSet != null && !this.bandSet.isAssociatedTo(bandType)) {
 			throw new InvalidParameterException(
 					  "Invalid band set '" + this.bandSet.name() 
 					+ "' for the type '" + bandType.name() 
@@ -203,7 +226,6 @@ public class EqSetting extends BaseEntity {
 		}
 		this.bandType = bandType;
 	}
-
 
 	/**
 	 * Sets the band set.
@@ -215,7 +237,8 @@ public class EqSetting extends BaseEntity {
 	public void setBandSet(final BandSet bandSet) throws InvalidParameterException {
 		if (bandSet == null) {
 			throw new InvalidParameterException("Invalid band set; it is NULL");
-		} else if (this.bandType != null && !bandSet.isAssociatedTo(this.bandType)) {
+		}
+		if (this.bandType != null && !bandSet.isAssociatedTo(this.bandType)) {
 			throw new InvalidParameterException(
 					  "Invalid band set '" + bandSet.name() 
 					+ "' for the type '" + this.bandType.name()
