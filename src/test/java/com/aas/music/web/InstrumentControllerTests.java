@@ -1,26 +1,5 @@
 package com.aas.music.web;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-//import org.mockito.internal.matchers.InstanceOf;
-import static org.mockito.Mockito.*;
-
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import com.aas.music.model.BaseEntity;
 import com.aas.music.model.EqInstrument;
 import com.aas.music.model.Instrument;
 import com.aas.music.model.VocalCompressor;
@@ -29,11 +8,29 @@ import com.aas.music.web.InstrumentsController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import static org.hamcrest.Matchers.*;
+import org.mockito.InjectMocks;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
+
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 /**
@@ -162,21 +159,21 @@ public class InstrumentControllerTests {
     	testData(instrumentId, instrument);
     }
 
-//    @Test
-//    public void testAddVocalCompressor() throws Exception {
-//    	final VocalCompressor instrument = new VocalCompressor();
-//
-//    	instrument.setName("Test");
-//    	testAdd(instrument);
-//    }
-//
-//    @Test
-//    public void testAddEqInstrument() throws Exception {
-//    	final EqInstrument instrument = new EqInstrument();
-//
-//    	instrument.setName("Test");
-//    	testAdd(instrument);
-//    }
+    @Test
+    public void testAddVocalCompressor() throws Exception {
+    	final VocalCompressor instrument = new VocalCompressor();
+
+    	instrument.setName("Test");
+    	testAdd(instrument);
+    }
+
+    @Test
+    public void testAddEqInstrument() throws Exception {
+    	final EqInstrument instrument = new EqInstrument();
+
+    	instrument.setName("Test");
+    	testAdd(instrument);
+    }
     
     @Test
     public void testDelete() throws Exception {
@@ -246,20 +243,18 @@ public class InstrumentControllerTests {
             .andExpect(forwardedUrl("instruments/instrumentsList"));
     }
 
-//    private void testAdd(final Instrument instrument) throws Exception {
-//    	final MvcResult result;
-//    	String content;
-//
-//    	when(this.instrumentService.add(instrument))
-//    		.thenReturn(Integer.valueOf(1));
-//    	result = this.mockMvc.perform(post(instrument instanceof EqInstrument 
-//    				? "/instruments/add" : "/instruments/addVC")
-//        		.content(asJsonString(instrument))
-//    			.contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isOk())
-//            .andReturn();
-//    	content = result.getResponse().getContentAsString();
-//    	assertTrue(Integer.parseInt(content) > 0);
-//    }
+    private void testAdd(final Instrument instrument) throws Exception {
+    	final Integer value = 1;
+
+    	when(this.instrumentService.add(Matchers.any(Instrument.class)))
+    		.thenReturn(value);
+    	this.mockMvc.perform(post(instrument instanceof EqInstrument 
+    				? "/instruments/add" : "/instruments/addVC")
+        		.content(asJsonString(instrument))
+    			.contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(value.toString()))
+            .andReturn();
+    }
 
 }

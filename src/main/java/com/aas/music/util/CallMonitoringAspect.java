@@ -60,7 +60,6 @@ public class CallMonitoringAspect {
         }
     }
 
-
     @Around("within(@org.springframework.stereotype.Repository *)")
     public Object invoke(final ProceedingJoinPoint joinPoint) throws Throwable {
         if (this.enabled) {
